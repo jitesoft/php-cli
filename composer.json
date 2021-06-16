@@ -1,0 +1,42 @@
+{
+    "name": "jitesoft/cli",
+    "description": "CLI for PHP. Simple, extendable and just working.",
+    "require": {
+        "php": ">=8",
+        "jitesoft/container": "^5.0.0"
+    },
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/jitesoft"
+        },
+        {
+            "type": "open-collective",
+            "url": "https://opencollective.com/jitesoft-open-source"
+        }
+    ],
+    "require-dev": {
+        "roave/security-advisories": "dev-latest",
+        "phpunit/phpunit": ">=10.0.x-dev",
+        "squizlabs/php_codesniffer": "^3.6"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "license": "MIT",
+    "autoload-dev": {
+        "psr-4": {
+            "Jitesoft\\Cli\\Arguments\\Tests\\": "tests/"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Jitesoft\\Cli\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Johannes Tegnér",
+            "email": "johannes@jitesoft.com"
+        }
+    ]
+}
