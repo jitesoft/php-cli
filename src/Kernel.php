@@ -74,7 +74,7 @@ class Kernel {
         }
 
         try {
-            foreach ($parsed as $key => $value) {
+            foreach ($parsed['options'] as $key => $value) {
                 if (strtolower($key) === 'help' || strtolower($key) === 'h') {
                     $this->manager->usage($command);
                     return;
