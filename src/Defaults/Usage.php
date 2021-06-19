@@ -30,22 +30,22 @@ class Usage implements UsageInterface {
             PHP_EOL,
             $manager->getName(),
             (
-            $commands ? sprintf(
-                '%s%sCommands:%s%s',
-                PHP_EOL,
-                PHP_EOL,
-                PHP_EOL,
-                $commands
-            ) : ''
+                $commands ? sprintf(
+                    '%s%sCommands:%s%s',
+                    PHP_EOL,
+                    PHP_EOL,
+                    PHP_EOL,
+                    $commands
+                ) : ''
             ),
             (
-            $options ? sprintf(
-                '%s%sOptions:%s%s',
-                PHP_EOL,
-                PHP_EOL,
-                PHP_EOL,
-                $options
-        ) : ''
+                $options ? sprintf(
+                    '%s%sOptions:%s%s',
+                    PHP_EOL,
+                    PHP_EOL,
+                    PHP_EOL,
+                    $options
+                ) : ''
             )
         );
     }
