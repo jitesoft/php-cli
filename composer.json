@@ -1,6 +1,6 @@
 {
     "name": "jitesoft/cli",
-    "description": "CLI for PHP. Simple, extendable and just working.",
+    "description": "CLI for PHP. Simple and easily extendable.",
     "require": {
         "php": ">=8",
         "jitesoft/container": "^5.0.0"
