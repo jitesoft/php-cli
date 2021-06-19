@@ -67,6 +67,7 @@ class Kernel {
         $parsed = Parser::parse($argv);
 
         $command = $this->manager->getCommand();
+
         if ($command === null) {
             $this->manager->usage();
             return;
@@ -74,7 +75,7 @@ class Kernel {
 
         try {
             foreach ($parsed as $key => $value) {
-                if (strtolower($key) === 'help' || strtolower('h')) {
+                if (strtolower($key) === 'help' || strtolower($key) === 'h') {
                     $this->manager->usage($command);
                     return;
                 }

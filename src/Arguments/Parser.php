@@ -62,26 +62,26 @@ class Parser {
                 $opt = true;
             }
 
-            if ($opt) {
-                if (str_contains($entry, '=')) {
-                    $split                                   = explode('=', $entry);
-                    $opts[trim($split[0], " \t\n\r\0\x0B-")] = trim($split[1]);
-                } else if ($len > ($i + 1) && !str_starts_with($inArgs[$i + 1], '-')) {
-                    $val = '';
-
-                    while ($len > ($i + 1) && !str_starts_with($inArgs[$i + 1], '-')) {
-                        $val .= $inArgs[$i + 1] . ' ';
-                        $i++;
-                    }
-
-                    $opts[trim($entry, " \t\n\r\0\x0B-")] = trim($val, " \t\n\r\0\x0B\"");
-                } else {
-                    $opts[trim($entry, " \t\n\r\0\x0B-")] = null;
-                }
+            if (!$opt) {
+                $args[] = trim($entry, " \t\n\r\0\x0B\"");
                 continue;
             }
 
-            $args[] = trim($entry, " \t\n\r\0\x0B\"");
+            if (str_contains($entry, '=')) {
+                $split                                   = explode('=', $entry);
+                $opts[trim($split[0], " \t\n\r\0\x0B-")] = trim($split[1]);
+            } else if ($len > ($i + 1) && !str_starts_with($inArgs[$i + 1], '-')) {
+                $val = '';
+
+                while ($len > ($i + 1) && !str_starts_with($inArgs[$i + 1], '-')) {
+                    $val .= $inArgs[$i + 1] . ' ';
+                    $i++;
+                }
+
+                $opts[trim($entry, " \t\n\r\0\x0B-")] = trim($val, " \t\n\r\0\x0B\"");
+            } else {
+                $opts[trim($entry, " \t\n\r\0\x0B-")] = null;
+            }
         }
 
         self::$parsed = ['command' => $command, 'arguments' => $args, 'options' => $opts];
