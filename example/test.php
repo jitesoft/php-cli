@@ -2,7 +2,9 @@
 
 use Jitesoft\Container\Container;
 
-require_once 'vendor/autoload.php';
+require_once '../vendor/autoload.php';
+require_once './TestCommand.php';
+require_once './TestKernel.php';
 
 // A custom kernel is created, naming the 'cli application' to 'cli' and settings its description to
 // 'A test cli.'.
