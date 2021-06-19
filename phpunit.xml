@@ -7,7 +7,8 @@
          colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true" processIsolation="true"
+         convertWarningsToExceptions="true"
+         processIsolation="true"
          stopOnFailure="false" >
     <coverage>
         <include>
