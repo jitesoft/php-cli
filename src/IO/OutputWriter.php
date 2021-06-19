@@ -2,6 +2,7 @@
 namespace Jitesoft\Cli\IO;
 
 /** @codeCoverageIgnore */
+
 class OutputWriter {
     /** @var false|resource */
     private      $stream;
@@ -63,7 +64,14 @@ class OutputWriter {
             return $this->out($text);
         }
 
-        fwrite($this->stream, Colors::apply($text, TextColor::Yellow, BackgroundColor::Red));
+        fwrite(
+            $this->stream,
+            Colors::apply(
+                $text,
+                TextColor::Yellow,
+                BackgroundColor::Red
+            )
+        );
         return $this;
     }
 
@@ -81,7 +89,15 @@ class OutputWriter {
         if (!$this->colors) {
             return $this->out($text);
         }
-        fwrite($this->stream, Colors::apply($text, $color, $backgroundColor, $decoration));
+        fwrite(
+            $this->stream,
+            Colors::apply(
+                $text,
+                $color,
+                $backgroundColor,
+                $decoration
+            )
+        );
         return $this;
     }
 

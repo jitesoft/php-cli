@@ -1,7 +1,6 @@
 <?php
 namespace Jitesoft\Cli\Arguments;
 
-
 interface OptionInterface extends InputObjectInterface {
 
     /**

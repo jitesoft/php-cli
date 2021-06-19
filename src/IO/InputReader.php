@@ -1,5 +1,6 @@
 <?php
 namespace Jitesoft\Cli\IO;
+
 /** @codeCoverageIgnore  */
 
 class InputReader {
@@ -17,4 +18,5 @@ class InputReader {
     public function readChar(): string {
         return fgetc($this->stream);
     }
+
 }

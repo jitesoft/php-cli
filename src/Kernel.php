@@ -16,20 +16,34 @@ class Kernel {
     private Manager $manager;
     private array $resolvedCommands = [];
 
-    protected array $commands = [];
+    protected array $commands      = [];
     protected array $globalOptions = [];
 
-    public function __construct(string $name, string $description, ContainerInterface $container = null) {
-        $this->globalOptions = array_merge($this->globalOptions, [
-            new Option('help', 'Print help information.', 'h', ['usage'])
-        ]);
+    public function __construct(string $name,
+                                string $description,
+                                ContainerInterface $container = null) {
+        $this->globalOptions = array_merge(
+            $this->globalOptions, [
+                new Option(
+                    'help',
+                    'Print help information.',
+                    'h',
+                    ['usage']
+                )
+            ]
+        );
 
         $this->container = $container ?? new Container();
         foreach ($this->commands as $command) {
             $this->addCommand($command);
         }
 
-        $this->manager = new Manager($name, $description, $this->resolvedCommands, $this->globalOptions);
+        $this->manager = new Manager(
+            $name,
+            $description,
+            $this->resolvedCommands,
+            $this->globalOptions
+        );
     }
 
     public function addCommand(string $commandClass): void {
@@ -41,7 +55,11 @@ class Kernel {
         // Use the container to auto-resolve any dependencies.
         $this->container->set($commandClass, $commandClass);
         $command = $this->container->get($commandClass);
-        $this->resolvedCommands[$command::class] = $command;
+
+        $this->resolvedCommands[
+            $command::class
+        ] = $command;
+
         $this->container->unset($commandClass);
     }
 
@@ -61,9 +79,12 @@ class Kernel {
                     return;
                 }
             }
-        } catch (Exception $ex) {
+        }
+        /** @codingStandardsIgnoreStart  */
+        catch (Exception) {
             /* Ignore. Will be caught inside invoke. */
         }
+        /** @codingStandardsIgnoreEnd  */
 
         $this->manager->invokeCommand($command);
     }

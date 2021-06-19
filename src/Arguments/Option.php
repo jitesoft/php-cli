@@ -4,12 +4,12 @@ namespace Jitesoft\Cli\Arguments;
 
 class Option implements OptionInterface {
 
-    protected string  $name;
-    protected string  $description;
+    protected string $name;
+    protected string $description;
     protected ?string $short;
-    protected ?array  $alias;
-    protected bool    $isRequired;
-    protected bool    $mustHaveValue;
+    protected ?array $alias;
+    protected bool $isRequired;
+    protected bool $mustHaveValue;
 
     public function __construct(
         string $name,
@@ -50,4 +50,5 @@ class Option implements OptionInterface {
     public function mustHaveValue(): bool {
         return $this->mustHaveValue;
     }
+
 }

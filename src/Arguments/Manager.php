@@ -11,20 +11,23 @@ class Manager implements InputObjectInterface {
 
 
     /** @var array|CommandInterface[] */
-    private array          $commands;
-    private array          $globalOptions;
-    private string         $name;
-    private string         $description;
+    private array $commands;
+    private array $globalOptions;
+    private string $name;
+    private string $description;
     private UsageInterface $usage;
-    private OutputWriter   $output;
-    private InputReader    $input;
+    private OutputWriter $output;
+    private InputReader $input;
 
     /**
      * Creates a new manager to handle commands and parsing of arguments.
      *
      * @param array|CommandInterface[] $commands
      */
-    public function __construct(string $name, string $description, array $commands, array $globalOptions = []) {
+    public function __construct(string $name,
+                                string $description,
+                                array $commands,
+                                array $globalOptions = []) {
         $this->globalOptions = $globalOptions;
         $this->commands      = $commands;
         $this->name          = $name;
@@ -34,7 +37,7 @@ class Manager implements InputObjectInterface {
         $this->input         = new InputReader();
     }
 
-    public function invokeCommand(CommandInterface $command, array $argv = null): void {
+    public function invokeCommand(CommandInterface $command): void {
         $command->setInput($this->input)
                 ->setOutput($this->output);
 
@@ -64,14 +67,18 @@ class Manager implements InputObjectInterface {
         foreach ($command?->getOptions() ?? [] as $option) {
             foreach ($options as $name => $value) {
                 $lowerCaseName = strtolower($name);
-                if ($lowerCaseName === strtolower($option->getName()) ||
-                    $lowerCaseName === strtolower($option->getShort())) {
+                if ($lowerCaseName === strtolower($option->getName())
+                    || $lowerCaseName === strtolower($option->getShort())
+                ) {
 
                     $opts[$option->getName()] = $value;
                     break;
                 }
 
-                $mappedToLower = array_map(static fn($s) => strtolower($s), $option->getAlias());
+                $mappedToLower = array_map(
+                    static fn($s) => strtolower($s),
+                    $option->getAlias()
+                );
                 if (in_array($lowerCaseName, $mappedToLower, true)) {
                     $opts[$option->getName()] = $value;
                     break;
@@ -81,12 +88,28 @@ class Manager implements InputObjectInterface {
 
         // Check constraints.
         foreach ($command?->getOptions() ?? [] as $option) {
-            if ($option->isRequired() && !array_key_exists($option->getName(), $opts)) {
-                throw new Exception(sprintf('Option --%s is required.', $option->getName()));
+            if ($option->isRequired()
+                && !array_key_exists($option->getName(), $opts)
+            ) {
+
+                throw new Exception(
+                    sprintf(
+                        'Option --%s is required.',
+                        $option->getName()
+                    )
+                );
             }
 
-            if ($option->mustHaveValue() && $opts[$option->getName()] === null) {
-                throw new Exception(sprintf('Option --%s requires a value.', $option->getName()));
+            $throw = $option->mustHaveValue()
+                   && $opts[$option->getName()] === null;
+
+            if ($throw) {
+                throw new Exception(
+                    sprintf(
+                        'Option --%s requires a value.',
+                        $option->getName()
+                    )
+                );
             }
         }
 
@@ -102,14 +125,23 @@ class Manager implements InputObjectInterface {
         $cmdLen    = count($cmdArgs);
 
         // Order arguments and create list.
-        usort($cmdArgs, static fn(ArgumentInterface $a, ArgumentInterface $b) => $a->index() - $b->index());
+        usort(
+            $cmdArgs,
+            static fn(ArgumentInterface $a, ArgumentInterface $b)
+                => $a->index() - $b->index()
+        );
 
         // Count minimumn args.
-        $required = array_filter($cmdArgs, static fn(ArgumentInterface $a) => $a->isRequired());
+        $required = array_filter(
+            $cmdArgs,
+            static fn(ArgumentInterface $a) => $a->isRequired()
+        );
+
         if (count($arguments) < count($required)) {
+            $f = 'Command %s requires a minimum of %d arguments, %d passed.';
             throw new Exception(
                 sprintf(
-                    'Command %s requires a minimum of %d arguments, %d passed.',
+                    $f,
                     $command->getName(),
                     count($required),
                     count($arguments)
@@ -168,4 +200,5 @@ class Manager implements InputObjectInterface {
     public function getCommands(): array {
         return $this->commands;
     }
+
 }

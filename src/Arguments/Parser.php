@@ -9,6 +9,7 @@ class Parser {
         self::$parsed = null;
     }
 
+    /** @codingStandardsIgnoreStart  */
     /**
      * Parses incoming argument list (argv by default) and produces an
      * assoc array with the command, arguments and options parsed into
@@ -63,7 +64,7 @@ class Parser {
 
             if ($opt) {
                 if (str_contains($entry, '=')) {
-                    $split = explode('=', $entry);
+                    $split                                   = explode('=', $entry);
                     $opts[trim($split[0], " \t\n\r\0\x0B-")] = trim($split[1]);
                 } else if ($len > ($i + 1) && !str_starts_with($inArgs[$i + 1], '-')) {
                     $val = '';
@@ -86,4 +87,6 @@ class Parser {
         self::$parsed = ['command' => $command, 'arguments' => $args, 'options' => $opts];
         return self::$parsed;
     }
+    /** @codingStandardsIgnoreEnd */
+
 }

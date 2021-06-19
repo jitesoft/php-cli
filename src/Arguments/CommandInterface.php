@@ -63,4 +63,5 @@ interface CommandInterface extends InputObjectInterface {
      * @internal
      */
     public function setOutput(OutputWriter $outputWriter): static;
+
 }

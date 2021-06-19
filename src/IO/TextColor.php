@@ -1,6 +1,8 @@
 <?php
 namespace Jitesoft\Cli\IO;
+
 /** @codeCoverageIgnore  */
+/** @codingStandardsIgnoreStart  */
 
 /**
  * Class containing constants for text colors.
@@ -9,7 +11,8 @@ namespace Jitesoft\Cli\IO;
  */
 final class TextColor {
 
-    private function __construct() {/*Can't instantiate class*/}
+    private function __construct() {
+        /*Can't instantiate class*/}
 
     // 8bit
     public const Black   = "\033[0;30m";
@@ -32,3 +35,5 @@ final class TextColor {
     public const BrightWhite   = "\033[1;37";
 
 }
+
+/** @codingStandardsIgnoreEnd  */

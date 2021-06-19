@@ -1,5 +1,6 @@
 <?php
 namespace Jitesoft\Cli\IO;
+
 /** @codeCoverageIgnore  */
 
 /**
@@ -34,11 +35,11 @@ final class Colors {
     ): string {
         $text = trim($text);
 
-        $colorize = $textColor        ?? '';
+        $colorize  = $textColor ?? '';
         $colorize .= $backgroundColor ?? '';
-        $colorize .= $decoration      ?? '';
+        $colorize .= $decoration ?? '';
 
-        return "$colorize$text\033[0m";
+        return sprintf("%s%s\033[0m", $colorize, $text);
     }
 
 }

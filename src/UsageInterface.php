@@ -14,6 +14,7 @@ interface UsageInterface {
      * @param CommandInterface|null $command Command to generate usage for.
      * @return string
      */
-    public function getUsage(Manager $manager, ?CommandInterface $command = null): string;
+    public function getUsage(Manager $manager,
+                            ?CommandInterface $command = null): string;
 
 }

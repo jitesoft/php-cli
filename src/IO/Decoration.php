@@ -1,6 +1,8 @@
 <?php
 namespace Jitesoft\Cli\IO;
+
 /** @codeCoverageIgnore  */
+/** @codingStandardsIgnoreStart  */
 
 /**
  * Class containing constants for text decoration.
@@ -9,7 +11,8 @@ namespace Jitesoft\Cli\IO;
  */
 final class Decoration {
 
-    private function __construct() {/*Can't instantiate class*/}
+    private function __construct() {
+        /*Can't instantiate class*/}
 
     public const Normal    = "\033[0m";
     public const Bold      = "\033[1m";
@@ -17,3 +20,5 @@ final class Decoration {
     public const Reversed  = "\033[7m";
 
 }
+
+/** @codingStandardsIgnoreEnd  */
