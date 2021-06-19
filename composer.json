@@ -11,7 +11,7 @@
             "url": "https://github.com/sponsors/jitesoft"
         },
         {
-            "type": "open-collective",
+            "type": "opencollective",
             "url": "https://opencollective.com/jitesoft-open-source"
         }
     ],
@@ -40,3 +40,4 @@
         }
     ]
 }
+
