@@ -2,7 +2,19 @@
 
 namespace Jitesoft\Cli\Arguments;
 
+use Jitesoft\Cli\IO\InputReader;
+use Jitesoft\Cli\IO\OutputWriter;
+
 interface CommandInterface extends InputObjectInterface {
+
+    /**
+     * Process the command.
+     *
+     * @param array $arguments Arguments mapped name => value.
+     * @param array $options   Options mapped name => value.
+     * @return void
+     */
+    public function process(array $arguments, array $options): void;
 
     /**
      * Get a list of arguments that the Command makes use of.
@@ -34,4 +46,21 @@ interface CommandInterface extends InputObjectInterface {
      */
     public function addArgument(ArgumentInterface ...$argument): static;
 
+    /**
+     * Set input reader for the command.
+     *
+     * @param InputReader $inputReader
+     * @return static
+     * @internal
+     */
+    public function setInput(InputReader $inputReader): static;
+
+    /**
+     * Set output writer for the command.
+     *
+     * @param OutputWriter $outputWriter
+     * @return static
+     * @internal
+     */
+    public function setOutput(OutputWriter $outputWriter): static;
 }

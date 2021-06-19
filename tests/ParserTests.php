@@ -45,7 +45,7 @@ class ParserTests extends TestCase {
         ]);
 
         self::assertEquals([
-            'test'  => 1,
+            'test'  => null,
             'test2' => 'abc',
             'test3' => 'efg',
             'test4' => 'abc123',

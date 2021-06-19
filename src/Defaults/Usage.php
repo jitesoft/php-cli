@@ -30,7 +30,7 @@ class Usage implements UsageInterface {
 
     private function subCommand(CommandInterface $command, Manager $manager): string {
         $arguments = $this->getArgumentString($command->getArguments());
-        $options = $this->getOptionsString($command->getOptions());
+        $options = $this->getOptionsString(array_merge($command->getOptions(), $manager->getGlobalOptions()));
         return "{$command->getName()} - {$command->getDescription()}\nUsage: {$manager->getName()} {$command->getName()} [arguments] [options]" .
                 ($arguments ? "\n\nArguments:\n{$arguments}" : '') .
                 ($options ? "\n\nOptions:\n{$options}" : '');

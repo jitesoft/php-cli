@@ -3,17 +3,21 @@ namespace Jitesoft\Cli\Arguments;
 
 use Exception;
 use Jitesoft\Cli\Defaults\Usage;
+use Jitesoft\Cli\IO\InputReader;
+use Jitesoft\Cli\IO\OutputWriter;
 use Jitesoft\Cli\UsageInterface;
 
 class Manager implements InputObjectInterface {
 
-    protected array $globalOptions;
 
     /** @var array|CommandInterface[] */
-    protected array  $commands;
-    protected string $name;
-    protected string $description;
-    protected UsageInterface $usage;
+    private array          $commands;
+    private array          $globalOptions;
+    private string         $name;
+    private string         $description;
+    private UsageInterface $usage;
+    private OutputWriter   $output;
+    private InputReader    $input;
 
     /**
      * Creates a new manager to handle commands and parsing of arguments.
@@ -26,23 +30,38 @@ class Manager implements InputObjectInterface {
         $this->name          = $name;
         $this->description   = $description;
         $this->usage         = new Usage();
+        $this->output        = new OutputWriter();
+        $this->input         = new InputReader();
+    }
+
+    public function invokeCommand(CommandInterface $command, array $argv = null): void {
+        $command->setInput($this->input)
+                ->setOutput($this->output);
+
+        try {
+            $args = $this->getArguments();
+            $opts = $this->getOptions();
+
+            $command->process($args, $opts);
+        } catch (Exception $ex) {
+            $this->output->error($ex->getMessage());
+        }
     }
 
     /**
      * Get options from argument list.
      *
-     * @param array|null $argv Arguments or
      * @return array Options as an assoc array with [name => value].
      * @throws Exception
      */
-    public function getOptions(array $argv = null): array {
-        $parsed  = Parser::parse($argv);
+    public function getOptions(): array {
+        $parsed  = Parser::parse();
         $command = $this->findCommand($parsed['command']);
         $options = $parsed['options'];
         $opts    = [];
 
         // Match all options in the command.
-        foreach ($command->getOptions() as $option) {
+        foreach ($command?->getOptions() ?? [] as $option) {
             foreach ($options as $name => $value) {
                 $lowerCaseName = strtolower($name);
                 if ($lowerCaseName === strtolower($option->getName()) ||
@@ -61,7 +80,7 @@ class Manager implements InputObjectInterface {
         }
 
         // Check constraints.
-        foreach ($command->getOptions() as $option) {
+        foreach ($command?->getOptions() ?? [] as $option) {
             if ($option->isRequired() && !array_key_exists($option->getName(), $opts)) {
                 throw new Exception(sprintf('Option --%s is required.', $option->getName()));
             }
@@ -74,8 +93,8 @@ class Manager implements InputObjectInterface {
         return $opts;
     }
 
-    public function getArguments(array $argv = null): array {
-        $parsed    = Parser::parse($argv);
+    public function getArguments(): array {
+        $parsed    = Parser::parse();
         $command   = $this->findCommand($parsed['command']);
         $arguments = $parsed['arguments'];
         $args      = [];
@@ -111,7 +130,7 @@ class Manager implements InputObjectInterface {
         }
 
         foreach ($this->commands as $command) {
-            if ($command->getName() === $cmd) {
+            if (strtolower($command->getName()) === strtolower($cmd)) {
                 return $command;
             }
         }
@@ -125,8 +144,8 @@ class Manager implements InputObjectInterface {
      * @param array|null $argv
      * @return CommandInterface|null
      */
-    public function getCommand(array $argv = null): ?CommandInterface {
-        return $this->findCommand(Parser::parse($argv)['command']);
+    public function getCommand(): ?CommandInterface {
+        return $this->findCommand(Parser::parse()['command']);
     }
 
     public function getName(): string {
@@ -137,8 +156,9 @@ class Manager implements InputObjectInterface {
         return $this->description;
     }
 
-    public function getUsage(?CommandInterface $command = null): string {
-        return $this->usage->getUsage($this, $command);
+    public function usage(?CommandInterface $command = null): static {
+        $this->output->out($this->usage->getUsage($this, $command));
+        return $this;
     }
 
     public function getGlobalOptions(): array {

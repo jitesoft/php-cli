@@ -2,18 +2,16 @@
 
 namespace Jitesoft\Cli\Arguments;
 
-class Command implements CommandInterface {
-    protected array  $arguments;
-    protected array  $options;
-    protected string $name;
-    protected string $description;
+use Jitesoft\Cli\IO\InputReader;
+use Jitesoft\Cli\IO\OutputWriter;
 
-    public function __construct(string $name, string $description, array $arguments = [], array $options = []) {
-        $this->arguments = $arguments;
-        $this->options   = $options;
-        $this->name = $name;
-        $this->description = $description;
-    }
+abstract class Command implements CommandInterface {
+    protected array        $arguments   = [];
+    protected array        $options     = [];
+    protected string       $name        = '';
+    protected string       $description = '';
+    protected InputReader  $input;
+    protected OutputWriter $output;
 
     public function getArguments(): array {
         return $this->arguments;
@@ -39,5 +37,19 @@ class Command implements CommandInterface {
 
     public function getDescription(): string {
         return $this->description;
+    }
+
+    public function process(array $arguments, array $options): void {
+        $this->output->warning('This command is not implemented.');
+    }
+
+    public function setOutput(OutputWriter $outputWriter): static {
+        $this->output = $outputWriter;
+        return $this;
+    }
+
+    public function setInput(InputReader $inputReader): static {
+        $this->input = $inputReader;
+        return $this;
     }
 }
